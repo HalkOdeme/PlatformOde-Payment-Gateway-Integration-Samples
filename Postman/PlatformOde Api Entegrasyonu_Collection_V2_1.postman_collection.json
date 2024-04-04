@@ -165,7 +165,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"cc_holder_name\":\"Test kart\",\r\n    \"cc_no\":\"4132260000000003\",\r\n    \"expiry_month\":\"12\",\r\n    \"expiry_year\":\"2024\",\r\n    \"cvv\":\"555\",\r\n    \"currency_code\":\"TRY\", \r\n    \"installments_number\": 1,\r\n    \"invoice_id\":\"s8871111111\",\r\n    \"invoice_description\":\" INVOICE TEST DESCRIPTION\",\r\n    \"total\":10.00,\r\n    \"items\":[{\"name\":\"Item3\",\"price\":10,\"qnantity\":1,\"description\":\"item3 description\"}],\r\n    \"name\" : \"John\",\r\n    \"surname\" : \"Dao\",\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n    \"hash_key\" : \"{{hash_key}}\"\r\n}"
+					"raw": "{\r\n    \"cc_holder_name\":\"Test kart\",\r\n    \"cc_no\":\"4132260000000003\",\r\n    \"expiry_month\":\"12\",\r\n    \"expiry_year\":\"2024\",\r\n    \"cvv\":\"555\",\r\n    \"currency_code\":\"TRY\", \r\n    \"installments_number\": 1,\r\n    \"invoice_id\":\"s8873111111\",\r\n    \"invoice_description\":\" INVOICE TEST DESCRIPTION\",\r\n    \"total\":10.00,\r\n    \"items\":[{\"name\":\"Item3\",\"price\":10,\"quantity\":1,\"description\":\"item3 description\"}],\r\n    \"name\" : \"John\",\r\n    \"surname\" : \"Dao\",\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n    \"hash_key\" : \"{{hash_key}}\"\r\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/api/paySmart2D",
@@ -286,105 +286,13 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "hash_key",
-							"value": "{{hash_key}}",
-							"description": "We provided hash_key generation algorithm in documentation.",
-							"type": "text"
-						},
-						{
-							"key": "merchant_key",
-							"value": "{{merchant_key}}",
-							"type": "text"
-						},
-						{
-							"key": "cc_holder_name",
-							"value": "Test kart",
-							"type": "text"
-						},
-						{
-							"key": "cc_no",
-							"value": "4132260000000003",
-							"type": "text"
-						},
-						{
-							"key": "expiry_month",
-							"value": "11",
-							"type": "text"
-						},
-						{
-							"key": "expiry_year",
-							"value": "2027",
-							"type": "text"
-						},
-						{
-							"key": "currency_code",
-							"value": "TRY",
-							"type": "text"
-						},
-						{
-							"key": "installments_number",
-							"value": "1",
-							"type": "text"
-						},
-						{
-							"key": "invoice_id",
-							"value": "abcabc2222",
-							"type": "text"
-						},
-						{
-							"key": "invoice_description",
-							"value": "INVOICE TEST DESCRIPTION",
-							"type": "text"
-						},
-						{
-							"key": "total",
-							"value": "10",
-							"type": "text"
-						},
-						{
-							"key": "items",
-							"value": "[{\"name\":\"Item3\",\"price\":10,\"quantity\":1,\"description\":\"item3 description\"}]",
-							"type": "text"
-						},
-						{
-							"key": "name",
-							"value": "John",
-							"type": "text"
-						},
-						{
-							"key": "surname",
-							"value": "Dao",
-							"type": "text"
-						},
-						{
-							"key": "return_url",
-							"value": "http://redhat.com",
-							"type": "text"
-						},
-						{
-							"key": "cancel_url",
-							"value": "http://fuat.com",
-							"type": "text"
-						},
-						{
-							"key": "payment_completed_by",
-							"value": "merchant",
-							"type": "text"
-						},
-						{
-							"key": "cvv",
-							"value": "240",
-							"type": "text"
-						},
-						{
-							"key": "currency_id",
-							"value": "949",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\r\n    \"cc_holder_name\":\"Test kart\",\r\n    \"cc_no\":\"4132260000000003\",\r\n    \"expiry_month\":\"11\",\r\n    \"expiry_year\":\"2027\",\r\n    \"currency_code\":\"TRY\", \r\n    \"installments_number\": 1,\r\n    \"invoice_id\":\"s8271141131\",\r\n    \"invoice_description\":\" INVOICE TEST DESCRIPTION\",\r\n    \"total\":10.00,\r\n    \"items\":[{\"name\":\"Item3\",\"price\":10,\"quantity\":1,\"description\":\"item3 description\"}],\r\n    \"name\" : \"John\",\r\n    \"surname\" : \"Dao\",\r\n\t\"return_url\" : \"https://www.google.com/\",\r\n\t\"cancel_url\" : \"https://www.github.com/\",\r\n\t\"payment_completed_by\" : \"merchant\",\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n    \"hash_key\" : \"{{hash_key}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "{{base_url}}/api/paySmart3D",
@@ -524,20 +432,13 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "invoice_id",
-							"value": "s8511111111",
-							"description": "Fatura idsi",
-							"type": "text"
-						},
-						{
-							"key": "merchant_key",
-							"value": "{{merchant_key}}",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\r\n    \"invoice_id\":\"s8271141131\",\r\n    \"merchant_key\":\"{{merchant_key}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "{{base_url}}/api/checkstatus",
@@ -599,36 +500,36 @@
 							"}\r",
 							"\r",
 							"// Send with Raw Method - Start\r",
-							"// var requestBody = pm.request.body.toString()\r",
-							"//     .replace(/{{|}}/g, '')\r",
-							"//     .replace(/\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g, (match, group) => group ? \"\" : match);\r",
+							" var requestBody = pm.request.body.toString()\r",
+							"     .replace(/{{|}}/g, '')\r",
+							"     .replace(/\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g, (match, group) => group ? \"\" : match);\r",
 							"\r",
-							"// var requestBodyJson = JSON.parse(requestBody);\r",
+							" var requestBodyJson = JSON.parse(requestBody);\r",
 							"\r",
-							"// const app_secret = pm.variables.get(\"app_secret\");\r",
+							" const app_secret = pm.variables.get(\"app_secret\");\r",
 							"\r",
-							"// const hashKey = generateHashKey(\r",
-							"//     pm.variables.get('merchant_key'),\r",
-							"//     requestBodyJson.invoice_id,\r",
-							"//     requestBodyJson.status,\r",
-							"//     app_secret);\r",
+							" const hashKey = generateHashKey(\r",
+							"     pm.variables.get('merchant_key'),\r",
+							"     requestBodyJson.invoice_id,\r",
+							"     requestBodyJson.status,\r",
+							"     app_secret);\r",
 							"// Send with Raw Method - Finish\r",
 							"\r",
 							"\r",
 							"\r",
 							"// Send with Form-Data - Start\r",
-							"const formdata = pm.request.body.formdata;\r",
-							"const merchant_key = pm.variables.get('merchant_key');\r",
-							"const invoice_id = formdata.find(p => p.key == \"invoice_id\").value;\r",
-							"const status = formdata.find(p => p.key == \"status\").value;\r",
+							"// const formdata = pm.request.body.formdata;\r",
+							"// const merchant_key = pm.variables.get('merchant_key');\r",
+							"// const invoice_id = formdata.find(p => p.key == \"invoice_id\").value;\r",
+							"// const status = formdata.find(p => p.key == \"status\").value;\r",
 							"\r",
-							"const app_secret = pm.variables.get(\"app_secret\");\r",
+							"// const app_secret = pm.variables.get(\"app_secret\");\r",
 							"\r",
-							"const hashKey = generateHashKey(\r",
-							"    merchant_key,\r",
-							"    invoice_id,\r",
-							"    status,\r",
-							"    app_secret);\r",
+							"// const hashKey = generateHashKey(\r",
+							"//     merchant_key,\r",
+							"//     invoice_id,\r",
+							"//     status,\r",
+							"//     app_secret);\r",
 							"// Send with Form-Data - Finish\r",
 							"\r",
 							"\r",
@@ -654,35 +555,13 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "total",
-							"value": "41280.68",
-							"type": "text"
-						},
-						{
-							"key": "invoice_id",
-							"value": "s7211111111",
-							"description": "Fatura idsi",
-							"type": "text"
-						},
-						{
-							"key": "status",
-							"value": "1",
-							"type": "text"
-						},
-						{
-							"key": "merchant_key",
-							"value": "{{merchant_key}}",
-							"type": "text"
-						},
-						{
-							"key": "hash_key",
-							"value": "{{hash_key}}",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\r\n    \"total\":\"41280.68\",\r\n\t\"invoice_id\":\"s8271141131\",\r\n    \"status\":\"1\",\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n\t\"hash_key\":\"{{hash_key}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "{{base_url}}/api/confirmPayment",
@@ -903,6 +782,55 @@
 					"path": [
 						"api",
 						"getTransactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Transaction",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n    \"date\":\"2023-12-29\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/alltransaction",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"alltransaction"
 					]
 				}
 			},
