@@ -22,7 +22,7 @@ public class PaySmart2DRequest
 public class Item2D
 {
     public string name { get; set; }
-    public int price { get; set; }
+    public double price { get; set; }
     public int quantity { get; set; }
     public string description { get; set; }
 }

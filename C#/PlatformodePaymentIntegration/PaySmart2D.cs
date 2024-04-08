@@ -57,13 +57,13 @@ public class PaySmart2D
             installments_number = 1,
             invoice_id = InvoiceGenerator.GenerateInvoiceId(),
             invoice_description = "INVOICE TEST DESCRIPTION",
-            total = 10,
+            total = 16.43,
             items = new List<Item2D>
             {
                 new Item2D()
                 {
                     name = "item",
-                    price = 10,
+                    price = 16.43,
                     quantity = 1,
                     description = "item description"
                 }
@@ -77,7 +77,7 @@ public class PaySmart2D
 
         paySmart2DRequest.hash_key = hashGenerator.GenerateHashKey(
             false,
-            paySmart2DRequest.total.ToString(),
+            paySmart2DRequest.total.ToString().Replace(",","."),
             paySmart2DRequest.installments_number.ToString(),
             paySmart2DRequest.currency_code,
             paySmart2DRequest.merchant_key,

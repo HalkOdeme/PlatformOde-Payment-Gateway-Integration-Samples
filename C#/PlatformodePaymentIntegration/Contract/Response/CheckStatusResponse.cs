@@ -12,9 +12,9 @@ public class CheckStatusResponse
     public string bank_status_code { get; set; }
     public string bank_status_description { get; set; }
     public string invoice_id { get; set; }
-    public int total_refunded_amount { get; set; }
+    public double total_refunded_amount { get; set; }
     public string product_price { get; set; }
-    public int transaction_amount { get; set; }
+    public double transaction_amount { get; set; }
     public string ref_number { get; set; }
     public string transaction_type { get; set; }
     public string original_bank_error_code { get; set; }

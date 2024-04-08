@@ -60,8 +60,8 @@ public class GetTransactionApi
             getTransactionRequest.invoice_id ?? "",
             getTransactionRequest.currency_id ?? "",
             getTransactionRequest.payment_method_id ?? "",
-            getTransactionRequest.minamount.ToString() ?? "",
-            getTransactionRequest.maxamount.ToString() ?? "",
+            getTransactionRequest.minamount.ToString()?.Replace(",", ".") ?? "",
+            getTransactionRequest.maxamount.ToString()?.Replace(",", ".") ?? "",
             getTransactionRequest.transactionState ?? ""
             );
 

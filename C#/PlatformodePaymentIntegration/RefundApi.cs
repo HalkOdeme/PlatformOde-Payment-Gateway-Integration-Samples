@@ -59,7 +59,7 @@ public class RefundApi
 
         refundRequest.hash_key = hashGenerator.GenerateHashKey(
             false,
-            refundRequest.amount.ToString(),
+            refundRequest.amount.ToString()?.Replace(",", ".") ?? "",
             refundRequest.invoice_id,
             refundRequest.merchant_key);
 

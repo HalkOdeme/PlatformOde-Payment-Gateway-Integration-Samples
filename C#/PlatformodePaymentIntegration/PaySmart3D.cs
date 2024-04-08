@@ -67,7 +67,6 @@ public class PaySmart3D
             },
             name = "John",
             surname = "Dao",
-
             return_url = "https://www.google.com/",
             cancel_url = "https://www.github.com/",
             payment_completed_by = "merchant",    // optional
@@ -79,7 +78,7 @@ public class PaySmart3D
 
         paySmart3DRequest.hash_key = hashGenerator.GenerateHashKey(
             false,
-            paySmart3DRequest.total.ToString(),
+            paySmart3DRequest.total.ToString()?.Replace(",", ".") ?? "",
             paySmart3DRequest.installments_number.ToString(),
             paySmart3DRequest.currency_code,
             paySmart3DRequest.merchant_key,

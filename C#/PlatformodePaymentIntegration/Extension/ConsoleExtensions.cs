@@ -35,8 +35,8 @@
             int width = 100;
             string horizontalLine = new string('-', width);
 
-            int padding = Math.Max(0, (width - message.Length - 2) / 2); // 2 = border characters '|'
-            string paddedMessage = message.PadLeft(message.Length + padding).PadRight(width - 3); // 2 = border characters '|'
+            int padding = Math.Max(0, (width - message.Length - 2) / 2);
+            string paddedMessage = message.PadLeft(message.Length + padding).PadRight(width - 3);
 
             Console.WriteLine(horizontalLine);
             Console.WriteLine($"| {paddedMessage}|");

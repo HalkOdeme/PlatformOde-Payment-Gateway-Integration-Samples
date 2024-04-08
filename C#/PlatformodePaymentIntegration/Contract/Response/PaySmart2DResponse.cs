@@ -19,12 +19,12 @@ public class Data
     public int? payment_method { get; set; }
     public int? error_code { get; set; }
     public string error { get; set; }
-    public int? auth_code { get; set; }
+    public object? auth_code { get; set; }
     public int? merchant_commission { get; set; }
     public int? user_commission { get; set; }
     public int? merchant_commission_percentage { get; set; }
     public int? merchant_commission_fixed { get; set; }
     public string hash_key { get; set; }
-    public string original_bank_error_code { get; set; }
-    public string original_bank_error_description { get; set; }
+    public object? original_bank_error_code { get; set; }
+    public object? original_bank_error_description { get; set; }
 }
