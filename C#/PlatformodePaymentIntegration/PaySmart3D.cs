@@ -119,4 +119,45 @@ public class PaySmart3D
         ConsoleExtensions.BoxedOutput("Response Parametreler");
         ConsoleExtensions.WriteLineWithSubTitle("response : ",response ?? "Response alınamadı.");
     }
+
+
+    public void PrintHtml()
+    {
+        PaySmart3DRequest paySmart3DRequest = CreateRequestParameter(_apiSettings);
+
+        Console.WriteLine();
+        ConsoleExtensions.BoxedOutput("3D ile test edebilmek için 3dtest.html dosyası oluşturup aşağıdaki kodları yapıştırıp çalıştırınız.");
+
+        string htmlCode = $@"<html>
+<title>3D Test with Cvv</title>
+<body>
+<form name=""form"" action=""{_apiSettings.BaseAddress + URL}"" method=""POST"">
+    <input type=""hidden"" name=""cc_holder_name"" value=""{paySmart3DRequest.cc_holder_name}"">
+    <input type=""hidden"" name=""cc_no"" value=""{paySmart3DRequest.cc_no}"">
+    <input type=""hidden"" name=""expiry_month"" value=""{paySmart3DRequest.expiry_month}"">
+    <input type=""hidden"" name=""expiry_year"" value=""{paySmart3DRequest.expiry_year}"">
+    <input type=""hidden"" name=""currency_code"" value=""{paySmart3DRequest.currency_code}"">
+    <input type=""hidden"" name=""installments_number"" value=""{paySmart3DRequest.installments_number}"">
+    <input type=""hidden"" name=""invoice_id"" value=""{paySmart3DRequest.invoice_id}"">
+    <input type=""hidden"" name=""invoice_description"" value=""{paySmart3DRequest.invoice_description}"">
+    <input type=""hidden"" name=""total"" value=""{paySmart3DRequest.total}"">
+    <input type=""hidden"" name=""items"" value='{JsonSerializer.Serialize(paySmart3DRequest.items)}'>
+    <input type=""hidden"" name=""name"" value=""{paySmart3DRequest.name}"">
+    <input type=""hidden"" name=""surname"" value=""{paySmart3DRequest.surname}"">
+    <input type=""hidden"" name=""return_url"" value=""{paySmart3DRequest.return_url}"">
+    <input type=""hidden"" name=""cancel_url"" value=""{paySmart3DRequest.cancel_url}"">
+    <input type=""hidden"" name=""payment_completed_by"" value=""{paySmart3DRequest.payment_completed_by}"">
+    <input type=""hidden"" name=""cvv"" value=""{paySmart3DRequest.cvv}"">
+    <input type=""hidden"" name=""merchant_key"" value=""{paySmart3DRequest.merchant_key}"">
+    <input type=""hidden"" name=""hash_key"" value=""{paySmart3DRequest.hash_key}"">
+</form> 
+</body> 
+<script type=""text/javascript"">
+var form = document.forms[0];
+form.submit();
+</script>
+</html>";
+
+        Console.WriteLine(htmlCode);
+    }
 }

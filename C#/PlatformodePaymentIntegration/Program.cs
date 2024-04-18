@@ -68,7 +68,9 @@
             }
             else if (choice == 3)
             {
-                await new PaySmart3D().PrintAsync();
+                PaySmart3D paySmart3D = new();
+                await paySmart3D.PrintAsync();
+                paySmart3D.PrintHtml();
             }
             else if (choice == 4)
             {

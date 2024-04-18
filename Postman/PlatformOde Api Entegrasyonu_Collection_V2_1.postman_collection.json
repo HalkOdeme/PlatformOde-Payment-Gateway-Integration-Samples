@@ -58,7 +58,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \n    \"merchant_key\":\"{{merchant_key}}\",\n    \"currency_code\":\"TRY\",\n    \"invoice\":\"{\\\"invoice_id\\\":\\\"example-12\\\",\\\"invoice_description\\\":\\\"Testdescription\\\",\\\"total\\\":5.00,\\\"return_url\\\":\\\"https://google.com.tr\\\",\\\"cancel_url\\\":\\\"https://github.com.tr\\\",\\\"items\\\":[{\\\"name\\\":\\\"Item1\\\",\\\"price\\\":5,\\\"quantity\\\":1,\\\"description\\\":\\\"Test\\\"}]}\",\n    \"name\":\"John\",\n    \"surname\":\"Dao\"\n}",
+					"raw": "{ \n    \"merchant_key\":\"{{merchant_key}}\",\n    \"currency_code\":\"TRY\",\n    \"invoice\":\"{\\\"invoice_id\\\":\\\"example-132\\\",\\\"invoice_description\\\":\\\"Testdescription\\\",\\\"total\\\":10.00,\\\"return_url\\\":\\\"https://google.com.tr\\\",\\\"cancel_url\\\":\\\"https://github.com.tr\\\",\\\"items\\\":[{\\\"name\\\":\\\"Item1\\\",\\\"price\\\":10,\\\"quantity\\\":1,\\\"description\\\":\\\"Test\\\"}]}\",\n    \"name\":\"John\",\n    \"surname\":\"Dao\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -165,7 +165,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"cc_holder_name\":\"Test kart\",\r\n    \"cc_no\":\"4132260000000003\",\r\n    \"expiry_month\":\"12\",\r\n    \"expiry_year\":\"2024\",\r\n    \"cvv\":\"555\",\r\n    \"currency_code\":\"TRY\", \r\n    \"installments_number\": 1,\r\n    \"invoice_id\":\"Abcd1245\",\r\n    \"invoice_description\":\" INVOICE TEST DESCRIPTION\",\r\n    \"total\":11.00,\r\n    \"items\":[{\"name\":\"Item3\",\"price\":11,\"quantity\":1,\"description\":\"item3 description\"}],\r\n    \"name\" : \"John\",\r\n    \"surname\" : \"Dao\",\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n    \"hash_key\" : \"{{hash_key}}\"\r\n}"
+					"raw": "{\r\n    \"cc_holder_name\":\"Test kart\",\r\n    \"cc_no\":\"4132260000000003\",\r\n    \"expiry_month\":\"12\",\r\n    \"expiry_year\":\"2024\",\r\n    \"cvv\":\"555\",\r\n    \"currency_code\":\"TRY\", \r\n    \"installments_number\": 1,\r\n    \"invoice_id\":\"Abcd1245671\",\r\n    \"invoice_description\":\" INVOICE TEST DESCRIPTION\",\r\n    \"total\":22.00,\r\n    \"items\":[{\"name\":\"Item3\",\"price\":22,\"quantity\":1,\"description\":\"item3 description\"}],\r\n    \"name\" : \"John\",\r\n    \"surname\" : \"Dao\",\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n    \"hash_key\" : \"{{hash_key}}\"\r\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/api/paySmart2D",
@@ -270,6 +270,133 @@
 						"type": "text/javascript",
 						"packages": {}
 					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/*\r",
+							"\r",
+							"Manuel olarak 3d hash key oluşturmak için aşağıdaki web sitesine gidiniz ve tüm kodları yapıştırıp Run butonuna basınız.\r",
+							"https://dotnetfiddle.net/\r",
+							"\r",
+							"\r",
+							"using System;\r",
+							"using System.Security.Cryptography;\r",
+							"using System.Text;\r",
+							"using System.Linq;\r",
+							"\t\t\t\t\t\r",
+							"public class Program\r",
+							"{\r",
+							"\tpublic static void Main()\r",
+							"\t{\r",
+							"\t\t// Lütfen total, installment, currency_code, merchant_key ve invoice_id bilgilerini kontrol ediniz. Aşağıdaki alanları oluşturmak istediğiniz 3d key bilgilerine göre düzenleyiniz.\r",
+							"\t\t\r",
+							"\t\tstring appSecret = \"d017c8fe0ec7dcf2772ea4ee532aa8a6\";\t\t\t// app secret\r",
+							"\t\tstring merchant_key = \"$2y$10$j91kzXcjmHW5gb6J9oxtgeHnQpNJTm70Xd9yMcDjH0kWjgB7rjtlC\";\t\t\t// merchant_key\r",
+							"\t\tstring total = \"18\";\t\t\t\t\t\t\t\t\t\t\t// total\r",
+							"\t\tstring installment = \"1\";\t\t\t\t\t\t\t\t\t\t// installment\r",
+							"\t\tstring currency_code = \"TRY\";\t\t\t\t\t\t\t\t\t// currency_code\r",
+							"\t\tstring invoice_id = \"assd123gba1a\";\t\t\t\t\t\t\t\t// invoice_id\r",
+							"\t\t\r",
+							"\t\tvar threeDHashKey = GenerateHashKey(\r",
+							"\t\t\tappSecret,\r",
+							"\t\t\ttotal,\r",
+							"\t\t\tinstallment,\r",
+							"\t\t\tcurrency_code,\r",
+							"\t\t\tmerchant_key,\r",
+							"\t\t\tinvoice_id\r",
+							"\t\t); \r",
+							"\t\t\r",
+							"\t\tConsole.WriteLine(\"3D Hash key için girilen parametreler\");\r",
+							"\t\tConsole.WriteLine(\"appSecret : \" + appSecret);\r",
+							"\t\tConsole.WriteLine(\"merchant_key : \" + merchant_key);\r",
+							"\t\tConsole.WriteLine(\"total : \" + total);\r",
+							"\t\tConsole.WriteLine(\"installment : \" + installment);\r",
+							"\t\tConsole.WriteLine(\"currency_code : \" + currency_code);\r",
+							"\t\tConsole.WriteLine(\"invoice_id : \" + invoice_id);\r",
+							"\t\t\r",
+							"\t\tConsole.WriteLine();\r",
+							"\t\tConsole.WriteLine(\"Oluşan 3D Hash Key Bilgisi : \");\r",
+							"\t\tConsole.WriteLine(threeDHashKey);\r",
+							"\t}\r",
+							"\t\r",
+							"    public static string GenerateHashKey(string appSecret, params string[] subjects)\r",
+							"    {\r",
+							"        StringBuilder builder = new StringBuilder();\r",
+							"        for (int i = 0; i < subjects.Length; i++)\r",
+							"        {\r",
+							"            builder.Append(subjects[i]);\r",
+							"\r",
+							"            if (i < subjects.Length - 1)\r",
+							"                builder.Append('|');\r",
+							"        }\r",
+							"\r",
+							"        string data = builder.ToString();\r",
+							"\r",
+							"        Random mt_rand = new Random();\r",
+							"\r",
+							"        string iv = Sha1Hash(mt_rand.Next().ToString()).Substring(0, 16);\r",
+							"\r",
+							"        string password = Sha1Hash(appSecret);\r",
+							"        string salt = Sha1Hash(mt_rand.Next().ToString()).Substring(0, 4);\r",
+							"        string saltWithPassword = \"\";\r",
+							"\r",
+							"        using (SHA256 sha256Hash = SHA256.Create())\r",
+							"        {\r",
+							"            saltWithPassword = GetHash(sha256Hash, password + salt);\r",
+							"        }\r",
+							"\r",
+							"        string encrypted = Encryptor(data, saltWithPassword.Substring(0, 32), iv);\r",
+							"\r",
+							"        string msg_encrypted_bundle = iv + \":\" + salt + \":\" + encrypted;\r",
+							"        msg_encrypted_bundle = msg_encrypted_bundle.Replace(\"/\", \"__\");\r",
+							"\r",
+							"        return msg_encrypted_bundle;\r",
+							"    }\r",
+							"\t\r",
+							"    private static string Sha1Hash(string password)\r",
+							"    {\r",
+							"        return string.Join(\"\", SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(password)).Select(x => x.ToString(\"x2\")));\r",
+							"    }\r",
+							"\t\r",
+							"    private static string GetHash(HashAlgorithm hashAlgorithm, string input)\r",
+							"    {\r",
+							"        byte[] data = hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(input));\r",
+							"        var sBuilder = new StringBuilder();\r",
+							"\r",
+							"        for (int i = 0; i < data.Length; i++)\r",
+							"        {\r",
+							"            sBuilder.Append(data[i].ToString(\"x2\"));\r",
+							"        }\r",
+							"\r",
+							"        return sBuilder.ToString();\r",
+							"    }\r",
+							"\t\r",
+							"    private static string Encryptor(string TextToEncrypt, string strKey, string strIV)\r",
+							"    {\r",
+							"        byte[] PlainTextBytes = Encoding.UTF8.GetBytes(TextToEncrypt);\r",
+							"\r",
+							"        AesCryptoServiceProvider aesProvider = new AesCryptoServiceProvider();\r",
+							"        aesProvider.BlockSize = 128;\r",
+							"        aesProvider.KeySize = 256;\r",
+							"        aesProvider.Key = Encoding.UTF8.GetBytes(strKey);\r",
+							"        aesProvider.IV = Encoding.UTF8.GetBytes(strIV);\r",
+							"        aesProvider.Padding = PaddingMode.PKCS7;\r",
+							"        aesProvider.Mode = CipherMode.CBC;\r",
+							"\r",
+							"        ICryptoTransform cryptoTransform = aesProvider.CreateEncryptor(aesProvider.Key, aesProvider.IV);\r",
+							"        byte[] EncryptedBytes = cryptoTransform.TransformFinalBlock(PlainTextBytes, 0, PlainTextBytes.Length);\r",
+							"\r",
+							"        return Convert.ToBase64String(EncryptedBytes);\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"*/"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
 				}
 			],
 			"request": {
@@ -287,7 +414,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"cc_holder_name\":\"Test kart\",\r\n    \"cc_no\":\"4132260000000003\",\r\n    \"expiry_month\":\"11\",\r\n    \"expiry_year\":\"2027\",\r\n    \"currency_code\":\"TRY\", \r\n    \"installments_number\": 1,\r\n    \"invoice_id\":\"s92711df41131\",\r\n    \"invoice_description\":\" INVOICE TEST DESCRIPTION\",\r\n    \"total\":10.00,\r\n    \"items\":[{\"name\":\"Item3\",\"price\":10,\"quantity\":1,\"description\":\"item3 description\"}],\r\n    \"name\" : \"John\",\r\n    \"surname\" : \"Dao\",\r\n\t\"return_url\" : \"https://www.google.com/\",\r\n\t\"cancel_url\" : \"https://www.github.com/\",\r\n\t\"payment_completed_by\" : \"merchant\",\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n    \"hash_key\" : \"{{hash_key}}\"\r\n}",
+					"raw": "{\r\n    \"cc_holder_name\":\"Test kart\",\r\n    \"cc_no\":\"4132260000000003\",\r\n    \"expiry_month\":\"11\",\r\n    \"expiry_year\":\"2027\",\r\n    \"currency_code\":\"TRY\", \r\n    \"installments_number\": 1,\r\n    \"invoice_id\":\"sTf1131\",\r\n    \"invoice_description\":\" INVOICE TEST DESCRIPTION\",\r\n    \"total\":14.00,\r\n    \"items\":[{\"name\":\"Item3\",\"price\":14,\"quantity\":1,\"description\":\"item3 description\"}],\r\n    \"name\" : \"John\",\r\n    \"surname\" : \"Dao\",\r\n\t\"return_url\" : \"https://www.google.com/\",\r\n\t\"cancel_url\" : \"https://www.github.com/\",\r\n\t\"payment_completed_by\" : \"merchant\",\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n    \"hash_key\" : \"{{hash_key}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -396,7 +523,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"invoice_id\": \"s92711df41131\",\r\n    \"amount\": 10.00,\r\n    \"app_id\": \"{{app_id}}\",\r\n    \"app_secret\": \"{{app_secret}}\",\r\n    \"merchant_key\": \"{{merchant_key}}\",\r\n    \"hash_key\": \"{{hash_key}}\"\r\n}\r\n",
+					"raw": "{\r\n    \"invoice_id\": \"Abcd124567\",\r\n    \"amount\": 8.00,\r\n    \"app_id\": \"{{app_id}}\",\r\n    \"app_secret\": \"{{app_secret}}\",\r\n    \"merchant_key\": \"{{merchant_key}}\",\r\n    \"hash_key\": \"{{hash_key}}\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -433,7 +560,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"invoice_id\":\"Abcd1245\",\r\n    \"merchant_key\":\"{{merchant_key}}\"\r\n}",
+					"raw": "{\r\n    \"invoice_id\":\"Abcd12456\",\r\n    \"merchant_key\":\"{{merchant_key}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -767,7 +894,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n    \"hash_key\" : \"{{hash_key}}\",\r\n    \"date\":\"2024-04-05\",\r\n    \"invoiceid\":\"s92711df41131\",  // Optional\r\n    \"currency_id\" : 949 // Optional\r\n}",
+					"raw": "{\r\n    \"merchant_key\":\"{{merchant_key}}\",\r\n    \"hash_key\" : \"{{hash_key}}\",\r\n    \"date\":\"2024-04-17\",\r\n    \"invoiceid\":\"Abcd12456\"  // Optional\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
