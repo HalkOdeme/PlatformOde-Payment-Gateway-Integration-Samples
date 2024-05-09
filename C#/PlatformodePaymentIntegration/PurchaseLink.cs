@@ -37,11 +37,20 @@ public class PurchaseLink
             Content = new FormUrlEncodedContent(formData)
         };
 
-        var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+        try
+        {
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
 
-        var response = await httpResponse.Content.ReadAsStringAsync();
+            var response = await httpResponse.Content.ReadAsStringAsync();
 
-        return JsonSerializer.Deserialize<PurchaseLinkResponse>(response);
+            return JsonSerializer.Deserialize<PurchaseLinkResponse>(response);
+        }
+        catch (Exception ex)
+        {
+            var message = $"Beklenmedik bir hata oluştu. Lütfen gönderdiğiniz parametreleri kontrol ediniz ya da sistem yöneticisine başvurunuz.({ex.Message})";
+            ConsoleExtensions.BoxedOutputForErrorMessage("", message);
+            throw;
+        }
     }
 
     private PurchaseLinkRequest CreateRequestParameter(ApiSettings apiSettings)

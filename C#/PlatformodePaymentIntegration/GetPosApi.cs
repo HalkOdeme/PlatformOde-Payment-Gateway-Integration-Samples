@@ -23,24 +23,28 @@ public class GetPosApi
     {
         var tokenResponse = await new TokenApi().GetAsync();
 
-        if (tokenResponse == null)
-        {
-            throw new ArgumentNullException("Token bilgisi alınamadı. Lütfen appsettings.json dosyasındaki bilgileri kontrol ediniz.");
-        }
-
         GetPosRequest getPosRequest = CreateRequestParameter(_apiSettings);
 
         var jsonRequest = JsonSerializer.Serialize(getPosRequest);
 
         var httpContent = new StringContent(jsonRequest, System.Text.Encoding.UTF8, "application/json");
 
-        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenResponse.data.token);
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenResponse?.data?.token);
 
-        var httpResponse = await _httpClient.PostAsync($"{_apiSettings.BaseAddress}{URL}", httpContent);
+        try
+        {
+            var httpResponse = await _httpClient.PostAsync($"{_apiSettings.BaseAddress}{URL}", httpContent);
 
-        var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
 
-        return JsonSerializer.Deserialize<GetPosResponse>(jsonResponse);
+            return JsonSerializer.Deserialize<GetPosResponse>(jsonResponse);
+        }
+        catch (Exception ex)
+        {
+            var message = $"Beklenmedik bir hata oluştu. Lütfen gönderdiğiniz parametreleri kontrol ediniz ya da sistem yöneticisine başvurunuz.({ex.Message})";
+            ConsoleExtensions.BoxedOutputForErrorMessage("", message);
+            throw;
+        }
     }
 
     private GetPosRequest CreateRequestParameter(ApiSettings apiSettings)
@@ -77,10 +81,10 @@ public class GetPosApi
         {
             ConsoleExtensions.WriteLineWithSubTitle("status_code : ", response.status_code);
             ConsoleExtensions.WriteLineWithSubTitle("status_description : ", response.status_description);
-            ConsoleExtensions.WriteLineWithSubTitle("data : ", $"{response.detail.Count()} kayıt bulundu");
+            ConsoleExtensions.WriteLineWithSubTitle("data : ", $"{response.data.Count()} kayıt bulundu");
 
-            int i = 0;
-            foreach (var item in response.detail)
+            int i = 1;
+            foreach (var item in response.data)
             {
                 ConsoleExtensions.WriteLineWithSubTitle($"--------------- {i++}. Kayıt ---------------", null);
                 ConsoleExtensions.WriteLineWithSubTitle($"pos_id : ", item.pos_id);

@@ -4,7 +4,7 @@ public class GetPosResponse
 {
     public int status_code { get; set; }
     public string status_description { get; set; }
-    public List<Detail> detail { get; set; } = new List<Detail>();
+    public List<Detail> data { get; set; } = new List<Detail>();
 }
 
 public class Detail

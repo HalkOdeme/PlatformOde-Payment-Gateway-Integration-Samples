@@ -22,26 +22,30 @@ public class ConfirmPaymentApi
 
     private async Task<ConfirmPaymentResponse?> GetAsync(string invoice_id)
     {
-        var tokenResponse = await new TokenApi().GetAsync();
+            var tokenResponse = await new TokenApi().GetAsync();
 
-        if (tokenResponse == null)
+            ConfirmPaymentRequest confirmPaymentRequest = CreateRequestParameter(_apiSettings, invoice_id);
+
+            var jsonRequest = JsonSerializer.Serialize(confirmPaymentRequest);
+
+            var httpContent = new StringContent(jsonRequest, System.Text.Encoding.UTF8, "application/json");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenResponse?.data?.token);
+
+        try
         {
-            throw new ArgumentNullException("Token bilgisi alınamadı. Lütfen appsettings.json dosyasındaki bilgileri kontrol ediniz.");
+            var httpResponse = await _httpClient.PostAsync($"{_apiSettings.BaseAddress}{URL}", httpContent);
+
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<ConfirmPaymentResponse>(jsonResponse);
         }
-
-        ConfirmPaymentRequest confirmPaymentRequest = CreateRequestParameter(_apiSettings, invoice_id);
-
-        var jsonRequest = JsonSerializer.Serialize(confirmPaymentRequest);
-
-        var httpContent = new StringContent(jsonRequest, System.Text.Encoding.UTF8, "application/json");
-
-        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenResponse.data.token);
-
-        var httpResponse = await _httpClient.PostAsync($"{_apiSettings.BaseAddress}{URL}", httpContent);
-
-        var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
-
-        return JsonSerializer.Deserialize<ConfirmPaymentResponse>(jsonResponse);
+        catch (Exception ex)
+        {
+            var message = $"Beklenmedik bir hata oluştu. Lütfen gönderdiğiniz parametreleri kontrol ediniz ya da sistem yöneticisine başvurunuz.({ex.Message})";
+            ConsoleExtensions.BoxedOutputForErrorMessage("", message);
+            throw;
+        }
     }
 
     private ConfirmPaymentRequest CreateRequestParameter(ApiSettings apiSettings, string invoice_id)

@@ -23,24 +23,28 @@ public class CheckStatusApi
     {
         var tokenResponse = await new TokenApi().GetAsync();
 
-        if (tokenResponse == null)
-        {
-            throw new ArgumentNullException("Token bilgisi alınamadı. Lütfen appsettings.json dosyasındaki bilgileri kontrol ediniz.");
-        }
-
         CheckStatusRequest checkStatusRequest = CreateRequestParameter(_apiSettings, invoice_id);
 
         var jsonRequest = JsonSerializer.Serialize(checkStatusRequest);
 
         var httpContent = new StringContent(jsonRequest, System.Text.Encoding.UTF8, "application/json");
 
-        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenResponse.data.token);
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenResponse?.data?.token);
 
-        var httpResponse = await _httpClient.PostAsync($"{_apiSettings.BaseAddress}{URL}", httpContent);
+        try
+        {
+            var httpResponse = await _httpClient.PostAsync($"{_apiSettings.BaseAddress}{URL}", httpContent);
 
-        var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+            var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
 
-        return JsonSerializer.Deserialize<CheckStatusResponse>(jsonResponse);
+            return JsonSerializer.Deserialize<CheckStatusResponse>(jsonResponse);
+        }
+        catch (Exception ex)
+        {
+            var message = $"Beklenmedik bir hata oluştu. Lütfen gönderdiğiniz parametreleri kontrol ediniz ya da sistem yöneticisine başvurunuz.({ex.Message})";
+            ConsoleExtensions.BoxedOutputForErrorMessage("", message);
+            throw;
+        }
     }
 
     private CheckStatusRequest CreateRequestParameter(ApiSettings apiSettings, string invoice_id)

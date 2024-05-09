@@ -20,20 +20,44 @@ public class TokenApi
 
     public async Task<TokenResponse?> GetAsync()
     {
-        var formData = new Dictionary<string, string>
+        try
+        {
+            var formData = new Dictionary<string, string>
             {
                 { "app_id", _apiSettings.AppId },
                 { "app_secret", _apiSettings.AppSecret }
             };
 
-        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, $"{_apiSettings.BaseAddress}{URL}")
-        {
-            Content = new FormUrlEncodedContent(formData)
-        };
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, $"{_apiSettings.BaseAddress}{URL}")
+            {
+                Content = new FormUrlEncodedContent(formData)
+            };
 
-        var result = await _client.SendAsync(httpRequestMessage);
-        var response = await result.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<TokenResponse>(response);
+            var result = await _client.SendAsync(httpRequestMessage);
+            var response = await result.Content.ReadAsStringAsync();
+            var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(response);
+
+            if (tokenResponse is null)
+            {
+                var message = "Token bilgisi alınamadı. Lütfen appsettings.json dosyasındaki bilgileri kontrol ediniz.";
+                ConsoleExtensions.BoxedOutputForErrorMessage("HATA : ", message);
+                throw new ArgumentNullException(message);
+            }
+
+            if (tokenResponse.data is null)
+            {
+                ConsoleExtensions.BoxedOutputForErrorMessage("HATA : " , tokenResponse.status_description);
+                throw new ArgumentNullException(tokenResponse.status_description);
+            }
+
+            return tokenResponse;
+        }
+        catch (Exception ex) when (!(ex is ArgumentNullException))
+        {
+            var message = $"Token alınırken beklenmedik bir hata oluştu. Lütfen sistem yöneticisine başvurunuz.({ex.Message})";
+            ConsoleExtensions.BoxedOutputForErrorMessage("", message);
+            throw;
+        }
     }
 
     public async Task PrintAsync()
@@ -50,7 +74,6 @@ public class TokenApi
         ConsoleExtensions.BoxedOutput("Response Parametreler");
         if (response != null)
         {
-            var responseData = response.data;
             ConsoleExtensions.WriteLineWithSubTitle("status_code : ", response.status_code);
             ConsoleExtensions.WriteLineWithSubTitle("status_description : ", response.status_description);
             ConsoleExtensions.WriteLineWithSubTitle("token : ", response.data?.token);

@@ -42,5 +42,23 @@
             Console.WriteLine($"| {paddedMessage}|");
             Console.WriteLine(horizontalLine);
         }
+
+
+        public static void BoxedOutputForErrorMessage(string subTitle, string message)
+        {
+            int width = 100;
+            string horizontalLine = new string('-', width);
+
+            message = subTitle + message;
+
+            int padding = Math.Max(0, (width - message.Length - 2) / 2);
+            string paddedMessage = message.PadLeft(message.Length + padding).PadRight(width - 3);
+
+            Console.WriteLine(horizontalLine);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine( $"| { paddedMessage }|");
+            Console.ResetColor();
+            Console.WriteLine(horizontalLine);
+        }
     }
 }

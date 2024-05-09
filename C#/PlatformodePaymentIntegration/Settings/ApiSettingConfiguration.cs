@@ -29,6 +29,9 @@ public class ApiSettingConfiguration
         if (!checkBaseAddress)
             throw new ArgumentException("base_address bilgisi bulunmadı. Lütfen appsettings.json dosyasındaki bilgileri kontrol ediniz.");
 
+        if (!base_address.EndsWith("/"))
+            base_address += "/";
+
         if (string.IsNullOrWhiteSpace(merchant_key))
             throw new ArgumentException("merchant_key bilgisi bulunmadı. Lütfen appsettings.json dosyasındaki bilgileri kontrol ediniz.");
 
