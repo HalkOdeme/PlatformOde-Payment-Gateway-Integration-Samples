@@ -17,7 +17,7 @@ public class Data
     public string transaction_type { get; set; }
     public int? payment_status { get; set; }
     public int? payment_method { get; set; }
-    public int? error_code { get; set; }
+    public object? error_code { get; set; }
     public string error { get; set; }
     public object? auth_code { get; set; }
     public int? merchant_commission { get; set; }
