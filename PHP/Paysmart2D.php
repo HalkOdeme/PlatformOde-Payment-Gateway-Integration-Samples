@@ -1,59 +1,122 @@
 <?php
 
-$url = "https://app.platformode.com.tr/ccpayment/api/paySmart2D"; // Yeni URL
+$baseUrl = "https://testapp.platformode.com.tr/ccpayment/api/paySmart2D";
+
+// Token Request
+$app_id = "de948c3eafdf5582409d0ad9a0809666";
+
+// Token & 2D Request
+$appSecret = "b15fba89a18997ab32e36d0b490f9aff	";
+
+// 2D Request
+$total = 110.00;
+$installment = 1;
+$merchantKey = '$2y$10$avMpLZvIIEY4brcULaj4u.can9eg3gAnx5s3JGz5Yxd.9zka8YfaO';
+$currencyCode = "TRY";
+$invoice_id = "Test9861";
+
+
+$tokenResponse = getToken($app_id, $appSecret);
+
+$decodedTokenResponse = json_decode($tokenResponse, true);
+
+if ($decodedTokenResponse['status_code'] == 100) {
+    $token = $decodedTokenResponse['data']['token'];
+} else {
+    echo "Token alınamadı. Lütfen bilgilerinizi kontrol ediniz.";
+	return;
+}
 
 $data = array(
-    "cc_holder_name" => "Test kart",
-    "cc_no" => "4132260000000003",
+    "cc_holder_name" => "John Dao",
+    "cc_no" => "4155141122223339",
     "expiry_month" => "12",
-    "expiry_year" => "2024",
+    "expiry_year" => "2025",
     "cvv" => "555",
-    "currency_code" => "TRY",
-    "installments_number" => 1,
-    "invoice_id" => "s1211111111",
+    "currency_code" => $currencyCode,
+    "installments_number" => $installment,
+    "invoice_id" => $invoice_id,
     "invoice_description" => "INVOICE TEST DESCRIPTION",
-    "total" => 10,
-    "merchant_key" => "$2y$10$HmRgYosneqcwHj.UH7upGuyCZqpQ1ITgSMj9Vvxn.t6f.Vdf2SQFO",
+    "total" => $total,
+    "merchant_key" => $merchantKey,
     "items" => array(
         array(
-            "name" => "Item3",
-            "price" => 10,
+            "name" => "item",
+            "price" => 110.00,
             "quantity" => 1,
-            "description" => "item3 description"
+            "description" => "item description"
         )
     ),
     "name" => "John",
     "surname" => "Dao",
-    "hash_key" => "4ceae33d55ce49f9:7800:WheFAz8QSZTZkA6kxHfpPpzLiSOG7RC8RZ4UZCpotgMUGXNQ4S7h48THDmNxN6fwzZzSeQ7Ps13whEIxoLZ7LSz__shMHuaNBQWw72iyZZhW__PmrFbB4j2qGg3C4Njcj1"
+    "payment_status" => 1,
+    "transaction_type" => "Auth",
+    "hash_key" => generateHashKey($total, $installment, $currencyCode, $merchantKey, $invoice_id, $appSecret)
 );
 
-$headers = array(
-    "Accept: application/json",
-    "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxNSIsImp0aSI6ImEyZTlkMzllYT71YyNPI6NQAj3KxOX"
-);
+$ch = curl_init($baseUrl);
 
-$ch = curl_init();
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    "Authorization: Bearer $token"
+));
 
-curl_setopt($ch, CURLOPT_URL, $url);
+$jsonData = json_encode($data);
+
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
 $response = curl_exec($ch);
 
-if ($response === false) {
-    echo "cURL hata: " . curl_error($ch);
-} else {
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
 
-    if ($httpCode == 200) {
-        echo $response;
-    } else {
-        echo "HTTP isteği başarısız: " . $httpCode;
-    }
+echo $response;
+
+function generateHashKey($total, $installment, $currency_code, $merchant_key, $invoice_id, $app_secret)
+{
+    $data = $total . '|' . $installment . '|' . $currency_code . '|' . $merchant_key . '|' . $invoice_id;
+
+    $iv = substr(sha1(mt_rand()), 0, 16);
+    $password = sha1($app_secret);
+
+    $salt = substr(sha1(mt_rand()), 0, 4);
+    $saltWithPassword = hash('sha256', $password . $salt);
+
+    $encrypted = openssl_encrypt("$data", 'aes-256-cbc', "$saltWithPassword", null, $iv);
+
+    $msg_encrypted_bundle = "$iv:$salt:$encrypted";
+    $msg_encrypted_bundle = str_replace('/', '__', $msg_encrypted_bundle);
+
+    return $msg_encrypted_bundle;
 }
 
-curl_close($ch);
+function getToken($app_id, $app_secret) {
+    $baseUrl = "https://testapp.platformode.com.tr/ccpayment/api/token";
+
+    $data = array(
+        'app_id' => $app_id,
+        'app_secret' => $app_secret
+    );
+
+    $jsonData = json_encode($data);
+
+    $ch = curl_init($baseUrl);
+
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+    ));
+
+    $response = curl_exec($ch);
+	
+	$decodedResponse = json_decode($response, true);
+	
+	return $response;
+
+    curl_close($ch);
+}
 
 ?>
