@@ -73,7 +73,7 @@ public class PaySmart3D
             surname = "Dao",
             return_url = "https://www.google.com/",
             cancel_url = "https://www.github.com/",
-            payment_completed_by = "merchant",    // optional
+            payment_completed_by = "app",    // optional "merchant" tanımlanırsa /payment/complete apisi çağrılarak ödeme tamamlanır.       
             cvv = "555",  // optional
             merchant_key = apiSettings.MerchantKey
         };
